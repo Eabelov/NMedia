@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_spacing">16dp</dimen>
+    <dimen name="avatar_size">48dp</dimen>
+    <dimen name="ic_menu_size_24">24dp</dimen>
+    <dimen name="likes_size">24dp</dimen>
+    <dimen name="like_bar_indent">10dp</dimen>
+</resources>
