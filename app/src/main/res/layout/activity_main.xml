@@ -83,7 +83,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="content" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/like"
         android:layout_width="@dimen/likes_size"
         android:layout_height="@dimen/likes_size"
