@@ -9,5 +9,4 @@ data class Post(
     var shareds: Int = 0,
     var viewers: Int = 0,
     var likedByMe: Boolean = false
-
 )
