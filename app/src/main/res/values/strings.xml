@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">NMedia!</string>
     <string name="avatar" translatable="false">avatar</string>
+    <string name="description_post_author_avatar" translatable="false" />
+    <string name="description_post_menu" translatable="false"  />
+    <string name="description_post_like"  translatable="false" />
+    <string name="description_post_share"  translatable="false" />
 </resources>

@@ -5,4 +5,5 @@
     <dimen name="ic_menu_size_24">24dp</dimen>
     <dimen name="likes_size">24dp</dimen>
     <dimen name="like_bar_indent">10dp</dimen>
+    <dimen name="posts_avatar_size" />
 </resources>
