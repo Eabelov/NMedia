@@ -46,14 +46,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_netology_48dp" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/menu"
-        android:layout_width="@dimen/ic_menu_size_24"
-        android:layout_height="@dimen/ic_menu_size_24"
-        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu" />
+        app:srcCompat="@drawable/ic_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/description_post_menu" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
