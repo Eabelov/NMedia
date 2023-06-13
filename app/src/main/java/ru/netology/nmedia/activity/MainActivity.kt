@@ -78,7 +78,6 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     viewModel.changeContent(text.toString())
                     viewModel.save()
-
                     setText("")
                     clearFocus()
                     HideKeyboard.hideKeyboard(this)
@@ -98,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 } else {
                     setText("")
+                    viewModel.addEmptyPost()
                     clearFocus()
                     HideKeyboard.hideKeyboard(this)
                     // Пролистываем RecyclerView в самый верх
@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity() {
                     editGroup.visibility = View.GONE
                 }
             }
-
         }
     }
 }

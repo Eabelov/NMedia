@@ -45,4 +45,8 @@ class PostViewModel : ViewModel() {
     fun setIsEditing(editing: Boolean) {
         isEditing.value = editing
     }
+
+    fun addEmptyPost(){
+        edited.value = empty
+    }
 }
