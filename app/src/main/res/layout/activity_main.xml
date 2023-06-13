@@ -48,4 +48,24 @@
         app:layout_constraintStart_toEndOf="@id/content"
         app:srcCompat="@drawable/ic_save_48" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="cancelEdit"/>
+
+    <ImageButton
+        android:id="@+id/cancelEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/description_post_cancelEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/content"
+        app:layout_constraintStart_toEndOf="@id/content"
+        app:srcCompat="@drawable/ic_cancel_24" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

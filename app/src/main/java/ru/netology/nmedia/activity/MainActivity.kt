@@ -2,10 +2,11 @@ package ru.netology.nmedia.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.constraintlayout.widget.Group
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
@@ -20,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val viewModel: PostViewModel by viewModels()
+        val editGroup: Group = findViewById(R.id.editGroup)
+        editGroup.visibility = View.GONE
+        val editCancel: ImageButton = findViewById(R.id.cancelEdit)
         val interactionListener: OnInteractionListener = object : OnInteractionListener {
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.edit(post)
             }
 
+
         }
         val adapter = PostsAdapter(interactionListener)
         binding.list.adapter = adapter
@@ -53,8 +58,12 @@ class MainActivity : AppCompatActivity() {
                 with(binding.content) {
                     requestFocus()
                     setText(post.content)
+                    viewModel.setIsEditing(true)
                 }
             }
+        }
+        viewModel.isEditing.observe(this) { isEditing ->
+            editGroup.visibility = if (isEditing) View.VISIBLE else View.GONE
         }
 
 
@@ -79,7 +88,25 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        binding.cancelEdit.setOnClickListener {
+            with(binding.content) {
+                if (text.isNullOrBlank()) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        context.getString(R.string.error_empty_content),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    setText("")
+                    clearFocus()
+                    HideKeyboard.hideKeyboard(this)
+                    // Пролистываем RecyclerView в самый верх
+                    binding.list.smoothScrollToPosition(0)
+                    editGroup.visibility = View.GONE
+                }
+            }
 
+        }
     }
 }
 
