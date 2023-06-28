@@ -32,13 +32,14 @@ class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
         val post = getItem(position)
         holder.bind(post)
     }
+
 }
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val onInteractionListener: OnInteractionListener,
+    private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(post: Post) {
+        fun bind(post: Post) {
         binding.apply {
             author.text = post.author
             published.text = post.published
@@ -48,9 +49,6 @@ class PostViewHolder(
             share.text = formatNumber(post.shareds)
             views.text = formatNumber(post.viewers)
             like.isChecked = post.likedByMe
-
-            //share.setImageResource(R.drawable.ic_baseline_share_24)
-            //views.setImageResource(R.drawable.ic_views_24)
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
@@ -82,7 +80,9 @@ class PostViewHolder(
             }
         }
     }
+
 }
+
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {

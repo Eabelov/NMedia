@@ -1,7 +1,10 @@
 package ru.netology.nmedia.viewmodel
 
+import android.content.Intent
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.netology.nmedia.activity.EditPostActivity
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
@@ -21,8 +24,6 @@ class PostViewModel : ViewModel() {
     val edited = MutableLiveData(empty)
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun shareById(id: Long) = repository.shareById(id)
-    fun viewsById(id: Long) = repository.viewsById(id)
     fun removeById(id: Long) = repository.removeById(id)
     fun save() {
         edited.value?.let {
@@ -30,23 +31,30 @@ class PostViewModel : ViewModel() {
         }
         edited.value = empty
     }
+    /*fun changeContent(content: String) {
+        val text = content.trim()
+        if (edited.value?.content == text) {
+            return
+        }
+        edited.value = edited.value?.copy(content = text)
+    }*/
+    fun changeContent(content: String) {
+        val text = content.trim()
+        if (edited.value?.content == text) {
+            return
+        }
+        edited.value = edited.value?.copy(content = text)
+    }
 
     fun edit(post: Post) {
         edited.value = post
     }
-
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content != text) {
-            edited.value = edited.value?.copy(content = text)
-        }
+    fun editPostActivityIntent(context: Context, content: String): Intent {
+        val intent = Intent(context, EditPostActivity::class.java)
+        intent.putExtra("content", content)
+        return intent
     }
 
-    fun setIsEditing(editing: Boolean) {
-        isEditing.value = editing
-    }
 
-    fun addEmptyPost(){
-        edited.value = empty
-    }
+
 }

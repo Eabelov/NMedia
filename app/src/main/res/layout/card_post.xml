@@ -46,16 +46,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_netology_48dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageView
         android:id="@+id/menu"
-        style="@style/Widget.AppTheme.MenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/ic_menu_selector"
         android:contentDescription="Menu"
+        android:src="@drawable/ic_menu_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        android:theme="@style/Widget.AppCompat.PopupMenu"
+        android:onClick="showMenu" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
