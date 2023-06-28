@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/Widget.AppCompat.PopupMenu"
-        android:onClick="showMenu" />
+        />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
