@@ -31,13 +31,7 @@ class PostViewModel : ViewModel() {
         }
         edited.value = empty
     }
-    /*fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
-            return
-        }
-        edited.value = edited.value?.copy(content = text)
-    }*/
+
     fun changeContent(content: String) {
         val text = content.trim()
         if (edited.value?.content == text) {
@@ -49,12 +43,5 @@ class PostViewModel : ViewModel() {
     fun edit(post: Post) {
         edited.value = post
     }
-    fun editPostActivityIntent(context: Context, content: String): Intent {
-        val intent = Intent(context, EditPostActivity::class.java)
-        intent.putExtra("content", content)
-        return intent
-    }
-
-
 
 }

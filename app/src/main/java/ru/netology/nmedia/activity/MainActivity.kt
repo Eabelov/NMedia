@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onEdit(post: Post) {
                 val content = post.content
-                //editPostLauncher.launch(content)
+                viewModel.edit(post)
                 editPostLauncher.launch(content)
             }
         }
