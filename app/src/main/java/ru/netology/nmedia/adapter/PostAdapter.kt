@@ -23,6 +23,7 @@ interface OnInteractionListener {
     fun onView(post: Post) {}
     fun onRemove(post: Post) {}
     fun onEdit(post: Post) {}
+    fun openVideoUrl(post: Post) {}
 }
 
 class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
@@ -36,32 +37,33 @@ class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
-        val videoThumbnail = holder.itemView.findViewById<ImageView>(R.id.videoThumbnail)
-        //val playButton = holder.itemView.findViewById<ImageButton>(R.id.playButton)
-
-        if (post.videoUrl == null) {
-            videoThumbnail.visibility = View.GONE
-            //playButton.visibility = View.GONE
-        } else {
-            videoThumbnail.visibility = View.VISIBLE
-            //playButton.visibility = View.VISIBLE
-
-            videoThumbnail.setImageResource(R.drawable.ic_play)
-
-            // Обработчик картинки
-            videoThumbnail.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
-                holder.itemView.context.startActivity(intent)
-            }
-
-            // Обработчик кнопки
-            /*playButton.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
-                holder.itemView.context.startActivity(intent)
-                finish()
-            }*/
-        }
     }
+    /*val videoThumbnail = holder.itemView.findViewById<ImageView>(R.id.videoThumbnail)
+    //val playButton = holder.itemView.findViewById<ImageButton>(R.id.playButton)
+
+    if (post.videoUrl == null) {
+        videoThumbnail.visibility = View.GONE
+        //playButton.visibility = View.GONE
+    } else {
+        videoThumbnail.visibility = View.VISIBLE
+        //playButton.visibility = View.VISIBLE
+
+        videoThumbnail.setImageResource(R.drawable.ic_play)
+
+        // Обработчик картинки
+        videoThumbnail.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
+            holder.itemView.context.startActivity(intent)
+        }
+
+        // Обработчик кнопки
+        /*playButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
+            holder.itemView.context.startActivity(intent)
+            finish()
+        }*/
+    }
+}*/
 
 }
 
@@ -69,7 +71,7 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: Post) {
+    fun bind(post: Post) {
         binding.apply {
             author.text = post.author
             published.text = post.published
@@ -107,6 +109,15 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+            if (post.videoUrl == null) {
+                videoThumbnail.visibility = View.GONE
+            } else {
+                videoThumbnail.visibility = View.VISIBLE
+                videoThumbnail.setImageResource(R.drawable.ic_play)
+            }
+            videoThumbnail.setOnClickListener{
+                onInteractionListener.openVideoUrl(post)
             }
         }
     }
