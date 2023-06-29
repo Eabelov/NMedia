@@ -1,9 +1,14 @@
 package ru.netology.nmedia.adapter
 
 
+import android.content.Intent
+import android.net.Uri
 import ru.netology.nmedia.utils.FormatNumber.formatNumber
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -31,6 +36,31 @@ class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
+        val videoThumbnail = holder.itemView.findViewById<ImageView>(R.id.videoThumbnail)
+        //val playButton = holder.itemView.findViewById<ImageButton>(R.id.playButton)
+
+        if (post.videoUrl == null) {
+            videoThumbnail.visibility = View.GONE
+            //playButton.visibility = View.GONE
+        } else {
+            videoThumbnail.visibility = View.VISIBLE
+            //playButton.visibility = View.VISIBLE
+
+            videoThumbnail.setImageResource(R.drawable.ic_play)
+
+            // Обработчик картинки
+            videoThumbnail.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
+                holder.itemView.context.startActivity(intent)
+            }
+
+            // Обработчик кнопки
+            /*playButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
+                holder.itemView.context.startActivity(intent)
+                finish()
+            }*/
+        }
     }
 
 }
