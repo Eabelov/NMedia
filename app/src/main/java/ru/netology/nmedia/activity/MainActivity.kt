@@ -1,5 +1,6 @@
 package ru.netology.nmedia.activity
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,7 +21,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        run {
+            val preferences = getPreferences(Context.MODE_PRIVATE)
+            preferences.edit().apply {
+                putString("key", "value") // putX
+                commit() // commit - синхронно, apply - асинхронно
+            }
+        }
+//
+//        run {
+//            getPreferences(Context.MODE_PRIVATE)
+//                .getString("key", "no value")?.let {
+//                    Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)
+//                        .show()
+//                }
+//        }
         val viewModel: PostViewModel by viewModels()
 
         val editPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->

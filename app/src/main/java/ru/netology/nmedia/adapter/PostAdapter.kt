@@ -38,33 +38,6 @@ class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
         val post = getItem(position)
         holder.bind(post)
     }
-    /*val videoThumbnail = holder.itemView.findViewById<ImageView>(R.id.videoThumbnail)
-    //val playButton = holder.itemView.findViewById<ImageButton>(R.id.playButton)
-
-    if (post.videoUrl == null) {
-        videoThumbnail.visibility = View.GONE
-        //playButton.visibility = View.GONE
-    } else {
-        videoThumbnail.visibility = View.VISIBLE
-        //playButton.visibility = View.VISIBLE
-
-        videoThumbnail.setImageResource(R.drawable.ic_play)
-
-        // Обработчик картинки
-        videoThumbnail.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
-            holder.itemView.context.startActivity(intent)
-        }
-
-        // Обработчик кнопки
-        /*playButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl.toString()))
-            holder.itemView.context.startActivity(intent)
-            finish()
-        }*/
-    }
-}*/
-
 }
 
 class PostViewHolder(
