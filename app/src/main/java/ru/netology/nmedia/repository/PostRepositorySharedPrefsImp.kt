@@ -1,11 +1,15 @@
 package ru.netology.nmedia.repository
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.netology.nmedia.dto.Post
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PostRepositorySharedPrefsImpl(
     context: Context,
@@ -26,6 +30,7 @@ class PostRepositorySharedPrefsImpl(
     }
     // для презентации убрали пустые строки
     override fun getAll(): LiveData<List<Post>> = data
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun save(post: Post) {
         if (post.id == 0L) {
             // TODO: remove hardcoded author & published
@@ -34,7 +39,7 @@ class PostRepositorySharedPrefsImpl(
                     id = nextId++,
                     author = "Me",
                     likedByMe = false,
-                    published = "now"
+                    published = (LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm"))).toString()
                 )
             ) + posts
             data.value = posts
