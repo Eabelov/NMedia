@@ -1,9 +1,15 @@
 package ru.netology.nmedia.viewmodel
 
+import android.app.Application
+import android.content.Intent
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.netology.nmedia.activity.EditPostActivity
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
+import ru.netology.nmedia.repository.PostRepositoryFileImpl
 import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 
 private val empty = Post(
@@ -11,18 +17,16 @@ private val empty = Post(
     content = "",
     author = "",
     likedByMe = false,
-    published = ""
+    published = "",
+    videoUrl = null
 )
 
-class PostViewModel : ViewModel() {
-    val isEditing = MutableLiveData<Boolean>()
-    private val repository: PostRepository = PostRepositoryInMemoryImpl()
+class PostViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: PostRepository = PostRepositoryFileImpl(application)
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun shareById(id: Long) = repository.shareById(id)
-    fun viewsById(id: Long) = repository.viewsById(id)
     fun removeById(id: Long) = repository.removeById(id)
     fun save() {
         edited.value?.let {
@@ -31,22 +35,16 @@ class PostViewModel : ViewModel() {
         edited.value = empty
     }
 
+    fun changeContent(content: String) {
+        val text = content.trim()
+        if (edited.value?.content == text) {
+            return
+        }
+        edited.value = edited.value?.copy(content = text)
+    }
+
     fun edit(post: Post) {
         edited.value = post
     }
 
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content != text) {
-            edited.value = edited.value?.copy(content = text)
-        }
-    }
-
-    fun setIsEditing(editing: Boolean) {
-        isEditing.value = editing
-    }
-
-    fun addEmptyPost(){
-        edited.value = empty
-    }
 }

@@ -1,9 +1,14 @@
 package ru.netology.nmedia.adapter
 
 
+import android.content.Intent
+import android.net.Uri
 import ru.netology.nmedia.utils.FormatNumber.formatNumber
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,6 +23,7 @@ interface OnInteractionListener {
     fun onView(post: Post) {}
     fun onRemove(post: Post) {}
     fun onEdit(post: Post) {}
+    fun openVideoUrl(post: Post) {}
 }
 
 class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
@@ -36,21 +42,18 @@ class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val onInteractionListener: OnInteractionListener,
+    private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            likeCount.text = formatNumber(post.likes)
-            shareCount.text = formatNumber(post.shareds)
-            viewsCount.text = formatNumber(post.viewers)
-            like.setImageResource(
-                if (post.likedByMe) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
-            )
-            share.setImageResource(R.drawable.ic_baseline_share_24)
-            views.setImageResource(R.drawable.ic_views_24)
+            avatar.setImageResource(R.drawable.ic_netology_48dp)
+            like.text = formatNumber(post.likes)
+            share.text = formatNumber(post.shareds)
+            views.text = formatNumber(post.viewers)
+            like.isChecked = post.likedByMe
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
@@ -80,9 +83,20 @@ class PostViewHolder(
                     }
                 }.show()
             }
+            if (post.videoUrl == null) {
+                videoThumbnail.visibility = View.GONE
+            } else {
+                videoThumbnail.visibility = View.VISIBLE
+                videoThumbnail.setImageResource(R.drawable.ic_play)
+            }
+            videoThumbnail.setOnClickListener{
+                onInteractionListener.openVideoUrl(post)
+            }
         }
     }
+
 }
+
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
