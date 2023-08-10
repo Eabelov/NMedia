@@ -27,6 +27,7 @@ class PostRepositoryFileImpl(
             // если файл есть - читаем
             context.openFileInput(filename).bufferedReader().use {
                 posts = gson.fromJson(it, type)
+                nextId = posts.maxOfOrNull { it.id }?.inc() ?: 1
                 data.value = posts
             }
         } else {
@@ -34,7 +35,7 @@ class PostRepositoryFileImpl(
             sync()
         }
     }
-    // для презентации убрали пустые строки
+
     override fun getAll(): LiveData<List<Post>> = data
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,7 +47,8 @@ class PostRepositoryFileImpl(
                     id = nextId++,
                     author = "Me",
                     likedByMe = false,
-                    published = (LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm"))).toString()
+                    published = (LocalDateTime.now()
+                        .format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm"))).toString()
                 )
             ) + posts
             data.value = posts

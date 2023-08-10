@@ -1,16 +1,14 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
-import android.content.Intent
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import ru.netology.nmedia.activity.EditPostActivity
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryFileImpl
-import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 
 private val empty = Post(
     id = 0,
@@ -46,5 +44,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun edit(post: Post) {
         edited.value = post
     }
+    fun clickPost(post: Post) {
+
+    }
+
+
+
 
 }
