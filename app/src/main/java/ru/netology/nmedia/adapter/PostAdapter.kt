@@ -24,6 +24,7 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onEdit(post: Post) {}
     fun openVideoUrl(post: Post) {}
+    fun clickPost(post: Post) {}
 }
 
 class PostsAdapter(private val onInteractionListener: OnInteractionListener) :
@@ -91,6 +92,9 @@ class PostViewHolder(
             }
             videoThumbnail.setOnClickListener{
                 onInteractionListener.openVideoUrl(post)
+            }
+            root.setOnClickListener{
+                onInteractionListener.clickPost(post)
             }
         }
     }
