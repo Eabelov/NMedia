@@ -14,7 +14,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Освоение новой профессии — это не только открывающиеся возможности и перспективы, но и настоящий вызов самому себе. Приходится выходить из зоны комфорта и перестраивать привычный образ жизни: менять распорядок дня, искать время для занятий, быть готовым к возможным неудачам в начале пути. В блоге рассказали, как избежать стресса на курсах профпереподготовки → http://netolo.gy/fPD",
             published = "23 сентября в 10:12",
             likedByMe = false,
-            videoUrl = URL("https://youtu.be/2vMsuiHxQ3k")
+            videoUrl = null//URL("https://youtu.be/2vMsuiHxQ3k")
         ),
         Post(
             id = nextId++,
@@ -30,7 +30,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Таймбоксинг — отличный способ навести порядок в своём календаре и разобраться с делами, которые долго откладывали на потом. Его главный принцип — на каждое дело заранее выделяется определённый отрезок времени. В это время вы работаете только над одной задачей, не переключаясь на другие. Собрали советы, которые помогут внедрить таймбоксинг \uD83D\uDC47\uD83C\uDFFB",
             published = "22 сентября в 10:12",
             likedByMe = false,
-            videoUrl = URL("https://youtu.be/2vMsuiHxQ3k")
+            videoUrl = null//URL("https://youtu.be/2vMsuiHxQ3k")
         ),
         Post(
             id = nextId++,
@@ -46,7 +46,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Диджитал давно стал частью нашей жизни: мы общаемся в социальных сетях и мессенджерах, заказываем еду, такси и оплачиваем счета через приложения.",
             published = "20 сентября в 10:14",
             likedByMe = false,
-            videoUrl = URL("https://youtu.be/2vMsuiHxQ3k")
+            videoUrl = null//URL("https://youtu.be/2vMsuiHxQ3k")
         ),
         Post(
             id = nextId++,
@@ -62,7 +62,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Языков программирования много, и выбрать какой-то один бывает нелегко. Собрали подборку статей, которая поможет вам начать, если вы остановили свой выбор на JavaScript.",
             published = "19 сентября в 10:24",
             likedByMe = false,
-            videoUrl = URL("https://youtu.be/2vMsuiHxQ3k")
+            videoUrl = null//URL("https://youtu.be/2vMsuiHxQ3k")
         ),
         Post(
             id = nextId++,
@@ -70,7 +70,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Знаний хватит на всех: на следующей неделе разбираемся с разработкой мобильных приложений, учимся рассказывать истории и составлять PR-стратегию прямо на бесплатных занятиях \uD83D\uDC47",
             published = "18 сентября в 10:12",
             likedByMe = false,
-            videoUrl = URL("https://youtu.be/2vMsuiHxQ3k")
+            videoUrl = null//URL("https://youtu.be/2vMsuiHxQ3k")
         ),
         Post(
             id = nextId++,
