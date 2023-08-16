@@ -1,4 +1,4 @@
-package ru.netology.nmedia.repository
+/*package ru.netology.nmedia.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -48,4 +48,4 @@ class PostRepositorySQLiteImpl(
         posts = dao.getAll()
         data.value = posts
     }
-}
+}*/

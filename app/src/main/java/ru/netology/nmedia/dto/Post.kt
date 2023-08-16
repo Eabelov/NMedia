@@ -7,7 +7,7 @@ data class Post(
     val published: String,
     var likedByMe: Boolean = false,
     var likes: Int = 0,
-    var shareds: Int = 1000,
+    var shareds: Int = 0,
     var viewers: Int = 0,
     var videoUrl: String?
 )
