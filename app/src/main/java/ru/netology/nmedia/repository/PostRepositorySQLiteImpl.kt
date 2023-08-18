@@ -1,4 +1,4 @@
-package ru.netology.nmedia.repository
+/*package ru.netology.nmedia.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,11 +32,13 @@ class PostRepositorySQLiteImpl(
     }
 
     override fun shareById(id: Long) {
+        dao.shareById(id)
         posts =  dao.getAll()
         data.value = posts
     }
 
     override fun viewsById(id: Long) {
+        dao.viewsById(id)
         posts = dao.getAll()
         data.value = posts
     }
@@ -46,4 +48,4 @@ class PostRepositorySQLiteImpl(
         posts = dao.getAll()
         data.value = posts
     }
-}
+}*/
