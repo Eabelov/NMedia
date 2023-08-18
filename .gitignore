@@ -2,6 +2,9 @@ reserve.md
 HELP.md
 .gradle
 build/
+constants.kt
+fcm.json
+google-service.json
 
 ### STS ###
 .apt_generated
