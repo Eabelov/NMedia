@@ -35,24 +35,26 @@ class FCMService : FirebaseMessagingService() {
             manager.createNotificationChannel(channel)
         }
     }
-
     override fun onMessageReceived(message: RemoteMessage) {
-
-        message.data[action]?.let {try {
-            when (Action.valueOf(it)) {
-                Action.NEWPOST -> handleLike(gson.fromJson(message.data[content], NewPostNotify::class.java))
+        message.data[action]?.let {
+            val actionEnum = try {
+                Action.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                getSharedPreferences("IllegalArgumentException", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("IllegalArgumentException", e.toString())
+                    .apply()
+                return
             }
-        } catch (e: IllegalArgumentException){
-            handleUnknownAction(e.toString())
-        }
+            when (actionEnum) {
+                Action.NEWPOST -> handleLike(gson.fromJson(message.data[content], NewPostNotify::class.java))
+
+            }
         }
     }
-    private fun handleUnknownAction(actionValue: String) {
-        getSharedPreferences("message_receive_exception", Context.MODE_PRIVATE)
-            .edit()
-            .putString("exception", actionValue)
-            .apply()
-    }
+
+
+
 
     override fun onNewToken(token: String) {
         getSharedPreferences("my_token", Context.MODE_PRIVATE)
@@ -97,17 +99,11 @@ enum class Action {
     NEWPOST,
 }
 
-data class Like(
-    val userId: Long,
-    val userName: String,
-    val postId: Long,
-    val postAuthor: String,
-)
-
 data class NewPostNotify(
     val userId: Long,
     val userName: String,
     val postId: Long,
     val postAuthor: String,
+    val contentId: Long,
     val postContent: String,
 )
