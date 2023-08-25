@@ -87,6 +87,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.empty.isVisible = state.empty
+            binding.swipeRefresh.isRefreshing = state.loading
         }
 
         binding.retry.setOnClickListener {
@@ -97,9 +98,10 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
+
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadPosts()
-            binding.swipeRefresh.isRefreshing = false
+            //binding.swipeRefresh.isRefreshing = true
         }
 
 
