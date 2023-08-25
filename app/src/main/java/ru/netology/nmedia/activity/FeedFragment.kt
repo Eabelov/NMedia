@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -19,19 +19,24 @@ import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+
 class FeedFragment : Fragment() {
+
+    private val viewModel: PostViewModel by activityViewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
-        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-        val interactionListener: OnInteractionListener = object : OnInteractionListener {
+    ): View {
+        val binding = FragmentFeedBinding.inflate(inflater, container, false)
+
+        val adapter = PostsAdapter(object : OnInteractionListener {
 
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
+                viewModel.likeById(post)
             }
 
             override fun onRemove(post: Post) {
@@ -71,26 +76,36 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_feedFragment_to_postFragment,
                     Bundle().apply
-                 { putLong("postId", post.id) })
+                    { putLong("postId", post.id) })
             }
 
+        })
+
+        binding.list.adapter = adapter
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.empty.isVisible = state.empty
         }
 
-
-        val adapter = PostsAdapter(interactionListener)
-        binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner)
-        { posts ->
-            adapter.submitList(posts)
+        binding.retry.setOnClickListener {
+            viewModel.loadPosts()
         }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.loadPosts()
+            binding.swipeRefresh.isRefreshing = false
+        }
+
 
         return binding.root
     }
+
 }
 
 

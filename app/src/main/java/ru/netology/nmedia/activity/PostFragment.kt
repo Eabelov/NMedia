@@ -1,3 +1,4 @@
+/*
 package ru.netology.nmedia.activity
 
 
@@ -80,3 +81,4 @@ class PostFragment : Fragment() {
 
 
 
+*/
