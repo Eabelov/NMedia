@@ -18,4 +18,7 @@
     <string name="channel_remote_description">Уведомления с удалённого сервера</string>
     <string name="notification_user_new_post">%1$s поставил лайк посту %2$s %3$s</string>
     <string name="google_play_unavailable">Google Api Недоступно</string>
+    <string name="empty">Пусто</string>
+    <string name="network_error">Сетевая ошибка</string>
+    <string name="retry">Повторить</string>
 </resources>
