@@ -101,7 +101,6 @@ class FeedFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadPosts()
-            //binding.swipeRefresh.isRefreshing = true
         }
 
 
