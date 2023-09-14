@@ -78,7 +78,6 @@ class FeedFragment : Fragment() {
                     Bundle().apply
                     { putLong("postId", post.id) })
             }
-
         })
 
         binding.list.adapter = adapter
