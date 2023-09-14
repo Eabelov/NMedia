@@ -95,20 +95,7 @@
         app:barrierDirection="bottom"
         app:layout_constraintTop_toBottomOf="@id/content"
         app:constraint_referenced_ids="content"
-         />
-
-    <!-- <ImageButton
-         android:id="@+id/playButton"
-         android:layout_width="72dp"
-         android:layout_height="72dp"
-         android:src="@drawable/ic_play"
-         android:background="?attr/selectableItemBackgroundBorderless"
-         android:visibility="gone"
-         app:layout_constraintTop_toTopOf="@id/videoThumbnail"
-         app:layout_constraintBottom_toBottomOf="@id/videoThumbnail"
-         app:layout_constraintStart_toStartOf="@id/videoThumbnail"
-         app:layout_constraintEnd_toEndOf="@id/videoThumbnail" />-->
-
+        />
 
     <ImageView
         android:id="@+id/attachment"
@@ -119,52 +106,52 @@
         tools:srcCompat="@drawable/test_image" />
 
     <androidx.constraintlayout.widget.Barrier
-         android:id="@+id/botBarrier"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="@dimen/common_spacing"
-         app:barrierDirection="bottom"
-         app:layout_constraintTop_toBottomOf="@id/attachment"
-         app:constraint_referenced_ids="attachment" />
+        android:id="@+id/botBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:barrierDirection="bottom"
+        app:layout_constraintTop_toBottomOf="@id/attachment"
+        app:constraint_referenced_ids="attachment" />
 
-     <com.google.android.material.button.MaterialButton
-         android:id="@+id/like"
-         style="@style/Widget.AppTheme.LikeButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="16dp"
-         app:icon="@drawable/ic_like_selector"
-         android:checked="true"
-         android:checkable="true"
-         android:contentDescription="Like"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@id/botBarrier"
-         tools:text="123" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/like"
+        style="@style/Widget.AppTheme.LikeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/ic_like_selector"
+        android:checked="true"
+        android:checkable="true"
+        android:contentDescription="Like"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/botBarrier"
+        tools:text="123" />
 
-     <com.google.android.material.button.MaterialButton
-         android:id="@+id/share"
-         style="@style/Widget.AppTheme.ShareButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="16dp"
-         android:button="@drawable/ic_share_selector"
-         android:contentDescription="Share"
-         android:text="1223"
-         app:layout_constraintStart_toEndOf="@id/like"
-         app:layout_constraintTop_toBottomOf="@id/botBarrier" />
-
-
-     <com.google.android.material.button.MaterialButton
-         android:id="@+id/views"
-         style="@style/Widget.AppTheme.ViewButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="16dp"
-         android:button="@drawable/ic_view_selector"
-         android:contentDescription="View"
-         android:text="123"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@id/botBarrier" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/share"
+        style="@style/Widget.AppTheme.ShareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:button="@drawable/ic_share_selector"
+        android:contentDescription="Share"
+        android:text="1223"
+        app:layout_constraintStart_toEndOf="@id/like"
+        app:layout_constraintTop_toBottomOf="@id/botBarrier" />
 
 
- </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/views"
+        style="@style/Widget.AppTheme.ViewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:button="@drawable/ic_view_selector"
+        android:contentDescription="View"
+        android:text="123"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/botBarrier" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
