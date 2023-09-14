@@ -44,7 +44,8 @@
         app:layout_constraintBottom_toBottomOf="@id/topBarrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_netology_48dp" />
+        tools:srcCompat="@drawable/ic_netology_48dp"
+        />
 
     <ImageView
         android:id="@+id/menu"
@@ -86,6 +87,15 @@
         app:layout_constraintTop_toBottomOf="@id/content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/attachmentBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:barrierDirection="bottom"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:constraint_referenced_ids="content"
+         />
 
     <!-- <ImageButton
          android:id="@+id/playButton"
@@ -100,14 +110,22 @@
          app:layout_constraintEnd_toEndOf="@id/videoThumbnail" />-->
 
 
-     <androidx.constraintlayout.widget.Barrier
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="350dp"
+        android:layout_height="320dp"
+        app:layout_constraintTop_toBottomOf="@id/attachmentBarrier"
+        tools:layout_editor_absoluteX="16dp"
+        tools:srcCompat="@drawable/test_image" />
+
+    <androidx.constraintlayout.widget.Barrier
          android:id="@+id/botBarrier"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginTop="@dimen/common_spacing"
          app:barrierDirection="bottom"
-         app:layout_constraintTop_toBottomOf="@id/videoThumbnail"
-         app:constraint_referenced_ids="videoThumbnail" />
+         app:layout_constraintTop_toBottomOf="@id/attachment"
+         app:constraint_referenced_ids="attachment" />
 
      <com.google.android.material.button.MaterialButton
          android:id="@+id/like"

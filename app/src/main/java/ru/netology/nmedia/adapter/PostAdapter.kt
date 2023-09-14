@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.extensions.load
+import ru.netology.nmedia.extensions.loadCircle
 
 interface OnInteractionListener {
     fun onLike(post: Post) {}
@@ -45,6 +48,7 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
+    private val baseUrl = "http://10.0.2.2:9999"
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
@@ -54,6 +58,10 @@ class PostViewHolder(
             like.text = formatNumber(post.likes)
             share.text = formatNumber(post.shareds)
             views.text = formatNumber(post.viewers)
+            avatar.loadCircle("$baseUrl/avatars/${post.authorAvatar}")
+            attachment.load("$baseUrl/images/${post.attachment?.url}")
+            attachment.contentDescription = post.attachment?.description
+            attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             like.isChecked = post.likedByMe
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
