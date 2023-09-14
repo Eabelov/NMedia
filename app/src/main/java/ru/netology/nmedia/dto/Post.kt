@@ -1,5 +1,7 @@
 package ru.netology.nmedia.dto
 
+import ru.netology.nmedia.enum.AttachmentType
+
 data class Post(
     val id: Long,
     val author: String,
