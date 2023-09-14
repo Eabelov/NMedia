@@ -10,7 +10,7 @@ fun ImageView.loadCircle(url: String){
         .circleCrop()
         .placeholder(R.drawable.ic_avatar_loading)
         .error(R.drawable.ic_avatar_error)
-        .timeout(30_000)
+        .timeout(10_000)
         .into(this)
 }
 
@@ -19,6 +19,6 @@ fun ImageView.load(url: String){
         .load(url)
         .placeholder(R.drawable.ic_avatar_loading)
         .error(R.drawable.ic_avatar_error)
-        .timeout(30_000)
+        .timeout(10_000)
         .into(this)
 }
