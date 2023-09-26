@@ -44,8 +44,7 @@
         app:layout_constraintBottom_toBottomOf="@id/topBarrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_netology_48dp"
-        />
+        tools:srcCompat="@drawable/ic_netology_48dp" />
 
     <ImageView
         android:id="@+id/menu"
@@ -53,10 +52,9 @@
         android:layout_height="wrap_content"
         android:contentDescription="Menu"
         android:src="@drawable/ic_menu_selector"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/Widget.AppCompat.PopupMenu"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
@@ -76,31 +74,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBarrier"
         tools:text="@sample/posts.json/data/content" />
+
     <ImageView
         android:id="@+id/videoThumbnail"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/ic_play"
-        android:scaleType="centerCrop"
         android:contentDescription="Video Thumbnail"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_play"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/content" />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/attachmentBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         app:barrierDirection="bottom"
-        app:layout_constraintTop_toBottomOf="@id/content"
         app:constraint_referenced_ids="content"
-        />
+        app:layout_constraintTop_toBottomOf="@id/content" />
 
     <ImageView
         android:id="@+id/attachment"
         android:layout_width="350dp"
-        android:layout_height="320dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         app:layout_constraintTop_toBottomOf="@id/attachmentBarrier"
         tools:layout_editor_absoluteX="16dp"
         tools:srcCompat="@drawable/test_image" />
@@ -111,8 +111,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         app:barrierDirection="bottom"
-        app:layout_constraintTop_toBottomOf="@id/attachment"
-        app:constraint_referenced_ids="attachment" />
+        app:constraint_referenced_ids="attachment"
+        app:layout_constraintTop_toBottomOf="@id/attachment" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
@@ -120,10 +120,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:icon="@drawable/ic_like_selector"
-        android:checked="true"
         android:checkable="true"
+        android:checked="true"
         android:contentDescription="Like"
+        app:icon="@drawable/ic_like_selector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/botBarrier"
         tools:text="123" />

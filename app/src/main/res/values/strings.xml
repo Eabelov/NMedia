@@ -21,4 +21,12 @@
     <string name="empty">Empty</string>
     <string name="network_error">Network error</string>
     <string name="retry">retry</string>
+    <string name="small_error">Oops, something went wrong :( . Refresh and try again or restart the app.</string>
+    <string name="small_error_positive">Refresh</string>
+    <string name="small_error_negative">Restart</string>
+    <string name="simple_description" translatable="false">Something missing here…</string>
+    <string name="chooser_play_video" translatable="false">Play</string>
+    <string name="empty_posts">Nothing to see here yet :(</string>
+    <string name="error_loading">Loading error</string>
+    <string name="retry_loading">Retry</string>
 </resources>

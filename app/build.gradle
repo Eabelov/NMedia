@@ -10,6 +10,7 @@ android {
     compileSdk 33
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
     defaultConfig {
         applicationId "ru.netology.nmedia"
@@ -26,9 +27,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.useCleartextTraffic = false
+            buildConfigField "String", "BASE_URL", "\"https://netomedia.ru/api\""
         }
         debug {
             manifestPlaceholders.useCleartextTraffic = true
+            buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:9999/api/slow\""
         }
     }
     compileOptions {
@@ -70,4 +73,6 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.11.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation "com.github.bumptech.glide:glide:4.14.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 }

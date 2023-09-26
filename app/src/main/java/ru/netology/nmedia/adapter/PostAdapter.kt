@@ -1,14 +1,10 @@
 package ru.netology.nmedia.adapter
 
 
-import android.content.Intent
-import android.net.Uri
 import ru.netology.nmedia.utils.FormatNumber.formatNumber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -19,6 +15,7 @@ import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.extensions.load
 import ru.netology.nmedia.extensions.loadCircle
+import ru.netology.nmedia.listener.OnInteractionListener
 
 interface OnInteractionListener {
     fun onLike(post: Post) {}
@@ -69,9 +66,6 @@ class PostViewHolder(
             share.setOnClickListener {
                 onInteractionListener.onShare(post)
             }
-            views.setOnClickListener {
-                onInteractionListener.onView(post)
-            }
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
@@ -97,12 +91,6 @@ class PostViewHolder(
             } else {
                 videoThumbnail.visibility = View.VISIBLE
                 videoThumbnail.setImageResource(R.drawable.ic_play)
-            }
-            videoThumbnail.setOnClickListener{
-                onInteractionListener.openVideoUrl(post)
-            }
-            root.setOnClickListener{
-                onInteractionListener.clickPost(post)
             }
         }
     }
