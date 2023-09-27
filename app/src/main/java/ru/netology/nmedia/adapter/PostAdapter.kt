@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
-import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.extensions.load
 import ru.netology.nmedia.extensions.loadCircle
-import ru.netology.nmedia.utils.FormatNumber
+import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.utils.FormatNumber.formatNumber
 
 class PostsAdapter(

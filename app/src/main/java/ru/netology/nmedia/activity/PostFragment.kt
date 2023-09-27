@@ -13,8 +13,8 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentPostBinding
-import ru.netology.nmedia.listener.OnInteractionListenerImpl
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.listener.OnInteractionListenerImpl
 import ru.netology.nmedia.viewmodel.PostViewModel
 class PostFragment : Fragment() {
     override fun onCreateView(
