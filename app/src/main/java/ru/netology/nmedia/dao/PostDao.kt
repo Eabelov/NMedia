@@ -34,13 +34,13 @@ interface PostDao {
 
     @Query("""
         UPDATE PostEntity SET
-        shareds = shareds + 1
+        shares = shares + 1
         WHERE id = :id
         """)
     fun shareById(id: Long)
     @Query("""
         UPDATE PostEntity SET
-        viewers = viewers + 1
+        views = views + 1
         WHERE id = :id
         """)
     fun viewsById(id: Long)

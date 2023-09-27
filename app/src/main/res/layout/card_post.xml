@@ -91,6 +91,7 @@
         android:id="@+id/attachmentBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:layout_marginTop="@dimen/common_spacing"
         app:barrierDirection="bottom"
         app:layout_constraintTop_toBottomOf="@id/content"
