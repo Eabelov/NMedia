@@ -46,7 +46,7 @@ class PostViewHolder(
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             author.text = post.author
             published.text = post.published.toString()
-            content.text = post.content
+            postText.text = post.content
             views.text = formatNumber(post.viewers)
             share.isChecked = post.sharedByMe
             share.text = formatNumber(post.shareds)
@@ -55,14 +55,13 @@ class PostViewHolder(
             like.text = formatNumber(post.likes)
 
             like.isChecked = post.likedByMe
-            if (post.videoUrl == null) {
-                videoThumbnail.visibility = View.GONE
-            } else {
-                videoThumbnail.visibility = View.VISIBLE
-                videoThumbnail.setImageResource(R.drawable.ic_play)
+            videoGroup.isVisible = !post.video.isNullOrEmpty()
+
+            videoPreview.setOnClickListener {
+                onInteractionListener.onPlayVideo(post)
             }
-            videoThumbnail.setOnClickListener{
-                onInteractionListener.openVideoUrl(post)
+            playVideo.setOnClickListener {
+                onInteractionListener.onPlayVideo(post)
             }
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
