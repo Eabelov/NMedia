@@ -5,54 +5,47 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.enum.AttachmentType
+import ru.netology.nmedia.types.AttachmentType
 
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val authorAvatar: String?,
     val author: String,
+    val authorAvatar: String,
     val content: String,
-    val published: Long,
+    val published: String,
     val likedByMe: Boolean,
     val sharedByMe: Boolean,
-    val likes: Int = 0,
-    val shares: Int = 0,
-    val views: Int = 0,
+    val likes: Long = 0,
+    val shares: Long,
+    val views: Long,
     val video: String? = null,
-    val videoUrl: String? = null,
+    @Embedded
+    var attachment: AttachmentEmbeddable?
 ) {
-    fun toDto() = Post(
-        id = id,
-        authorAvatar = authorAvatar,
-        author = author,
-        content = content,
-        published = published,
-        likedByMe = likedByMe,
-        sharedByMe = sharedByMe,
-        likes = likes,
-        shareds = shares,
-        viewers = views,
-        video = video,
-        videoUrl = videoUrl
-    )
+    fun toDto() = Post(id, author, authorAvatar, content, published, likedByMe, sharedByMe,likes,shares,views,video,attachment?.toDto())
 
     companion object {
-        fun fromDto(dto: Post, hidden: Boolean) =
-            PostEntity(
-                id = dto.id,
-                authorAvatar = dto.authorAvatar,
-                author = dto.author,
-                content = dto.content,
-                published = dto.published,
-                likedByMe = dto.likedByMe,
-                sharedByMe = dto.sharedByMe,
-                likes = dto.likes,
-                shares = dto.shareds,
-                views = dto.viewers,
-                video = dto.video,
-            )
+        fun fromDto(dto: Post) =
+            PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published,
+                dto.likedByMe, dto.sharedByMe, dto.likes, dto.shares, dto.views, dto.video, AttachmentEmbeddable.fromDto(dto.attachment))
 
     }
 }
+
+data class AttachmentEmbeddable(
+    var url: String,
+    var type: AttachmentType,
+) {
+    fun toDto() = Attachment(url, type)
+
+    companion object {
+        fun fromDto(dto: Attachment?) = dto?.let {
+            AttachmentEmbeddable(it.url, it.type)
+        }
+    }
+}
+
+fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
+fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

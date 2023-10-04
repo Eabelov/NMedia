@@ -42,7 +42,6 @@ class PostViewHolder(
             attachment.load("$baseUrl/images/${post.attachment?.url}")
             avatar.loadCircle("${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}")
             attachment.load("${BuildConfig.BASE_URL}/images/${post.attachment?.url}")
-            attachment.contentDescription = post.attachment?.description
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             author.text = post.author
             published.text = post.published.toString()

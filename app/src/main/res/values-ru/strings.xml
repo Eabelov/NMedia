@@ -20,10 +20,12 @@
     <string name="google_play_unavailable">Google Api Недоступно</string>
     <string name="empty">Пусто</string>
     <string name="network_error">Сетевая ошибка</string>
-    <string name="retry">Повторить</string>
     <string name="small_error">Упс, что-то пошло не так :( . Обновите и попробуйте снова или перезапустите приложение.</string>
     <string name="small_error_positive">Обновить</string>
     <string name="small_error_negative">Перезапуск</string>
     <string name="simple_description">Тут чего-то нехватает…</string>
     <string name="chooser_play_video">Воспроизвести</string>
+    <string name="error">Упс, что-то пошло не так :( . Обновите или попробуйте снова.</string>
+    <string name="retry">Повторить</string>
+    <string name="empty_posts">Здесь пока ничего нет :(</string>
 </resources>

@@ -29,14 +29,4 @@
         app:layout_anchor="@id/bottomAppBar"
         app:srcCompat="@drawable/ic_ok_24dp" />
 
-    <include
-        android:id="@+id/banner"
-        layout="@layout/small_error_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
