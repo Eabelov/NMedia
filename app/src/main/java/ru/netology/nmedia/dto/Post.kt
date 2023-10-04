@@ -10,6 +10,7 @@ data class Post(
     var likedByMe: Boolean = false,
     var likes: Int = 0,
     var shareds: Int = 0,
+    val sharedByMe: Boolean = false,
     var viewers: Int = 0,
     var videoUrl: String?,
     val authorAvatar: String?,

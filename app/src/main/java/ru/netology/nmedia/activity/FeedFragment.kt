@@ -10,14 +10,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
-import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
+import android.view.animation.AnimationUtils
+import androidx.core.app.ActivityCompat.finishAffinity
+import ru.netology.nmedia.listener.OnInteractionListener
 
 
 class FeedFragment : Fragment() {
@@ -31,7 +32,8 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
-
+        val animationSlideDown = AnimationUtils.loadAnimation(this.requireContext(), R.anim.slide_down)
+        val animationSlideUp = AnimationUtils.loadAnimation(this.requireContext(), R.anim.slide_up)
         val adapter = PostsAdapter(object : OnInteractionListener {
 
 
@@ -71,13 +73,6 @@ class FeedFragment : Fragment() {
                 val intent = Intent(Intent.ACTION_VIEW, videoUri)
                 startActivity(intent)
             }
-
-            override fun clickPost(post: Post) {
-                findNavController().navigate(
-                    R.id.action_feedFragment_to_postFragment,
-                    Bundle().apply
-                    { putLong("postId", post.id) })
-            }
         })
 
         binding.list.adapter = adapter
@@ -97,6 +92,20 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
+        binding.banner.positiveButton.setOnClickListener {
+            viewModel.loadPosts()
+            binding.banner.root.startAnimation(animationSlideUp)
+            binding.banner.root.isVisible = false
+        }
+        binding.banner.negativeButton.setOnClickListener {
+            finishAffinity(this.requireActivity())
+        }
+
+        viewModel.smallErrorHappened.observe(viewLifecycleOwner){
+
+            binding.banner.root.isVisible = true
+            binding.banner.root.startAnimation(animationSlideDown)
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadPosts()
