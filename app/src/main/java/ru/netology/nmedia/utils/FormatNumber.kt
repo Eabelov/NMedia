@@ -4,7 +4,7 @@ import java.text.DecimalFormat
 import kotlin.math.pow
 
 object FormatNumber {
-    fun formatNumber(number: Int): String {
+    fun formatNumber(number: Long): String {
         if (number < 1000) {
             return number.toString()
         }

@@ -28,4 +28,6 @@
     <string name="error">Упс, что-то пошло не так :( . Обновите или попробуйте снова.</string>
     <string name="retry">Повторить</string>
     <string name="empty_posts">Здесь пока ничего нет :(</string>
+    <string name="empty_content_warning">Контент не может быть пустым</string>
+    <string name="type_hint">Введите текст…</string>
 </resources>

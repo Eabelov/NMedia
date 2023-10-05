@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
+import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.utils.AndroidUtils
-import ru.netology.nmedia.utils.StringProperty
 import ru.netology.nmedia.viewmodel.PostViewModel
 class NewPostFragment : Fragment() {
     override fun onCreateView(
@@ -50,6 +50,6 @@ class NewPostFragment : Fragment() {
     }
 
     companion object {
-        var Bundle.textArg: String? by StringProperty
+        var Bundle.textArg: String? by StringArg
     }
 }
