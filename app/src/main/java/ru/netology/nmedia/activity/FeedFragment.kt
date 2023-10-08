@@ -1,123 +1,109 @@
 package ru.netology.nmedia.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.listener.OnInteractionListenerImpl
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.types.ErrorType
 import ru.netology.nmedia.viewmodel.PostViewModel
-import android.view.animation.AnimationUtils
-import androidx.core.app.ActivityCompat.finishAffinity
-import ru.netology.nmedia.listener.OnInteractionListener
-
 
 class FeedFragment : Fragment() {
+    val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
+    private val interactionListener by lazy {
+        object : OnInteractionListenerImpl(
+            this@FeedFragment.requireActivity(), viewModel
+        ) {
+            override fun onOpenPost(post: Post) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_postFragment,
+                    Bundle().apply {
+                        textArg = post.id.toString()
+                    })
+            }
 
-    private val viewModel: PostViewModel by activityViewModels()
-
+            override fun onEdit(post: Post) {
+                super.onEdit(post)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply {
+                        textArg = post.content
+                    })
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentFeedBinding.inflate(inflater, container, false)
-        val animationSlideDown = AnimationUtils.loadAnimation(this.requireContext(), R.anim.slide_down)
-        val animationSlideUp = AnimationUtils.loadAnimation(this.requireContext(), R.anim.slide_up)
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        val binding = FragmentFeedBinding.inflate(
+            inflater,
+            container,
+            false
+        )
 
+        val swipeRefresh = binding.swiperefresh
 
-            override fun onLike(post: Post) {
-                viewModel.likeById(post)
-            }
-
-            override fun onRemove(post: Post) {
-                viewModel.removeById(post.id)
-            }
-
-            override fun onShare(post: Post) {
-                viewModel.sharedById(post.id)
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
-                startActivity(shareIntent)
-            }
-
-            override fun onEdit(post: Post) {
-                viewModel.edit(post)
-                findNavController().navigate(
-                    R.id.action_feedFragment_to_editPostFragment,
-                    Bundle().apply {
-                        textArg = post.content
-                    }
-                )
-            }
-
-            override fun openVideoUrl(post: Post) {
-                val videoUri = Uri.parse(post.videoUrl.toString())
-                val intent = Intent(Intent.ACTION_VIEW, videoUri)
-                startActivity(intent)
-            }
-        })
+        val adapter = PostsAdapter(interactionListener)
 
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
-            binding.progress.isVisible = state.loading
-            binding.errorGroup.isVisible = state.error
-            binding.empty.isVisible = state.empty
-            binding.swipeRefresh.isRefreshing = state.loading
+        viewModel.data.observe(viewLifecycleOwner) { data ->
+            val newPost = adapter.currentList.size < data.posts.size
+            adapter.submitList(data.posts) {
+                if (newPost) {
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+            binding.emptyText.isVisible = data.empty
+        }
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
+            when (state.error) {
+                ErrorType.LOADING ->
+                    Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.retry) { viewModel.loadPosts() }
+                        .show()
+
+                ErrorType.SAVE ->
+                    Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.retry) { viewModel.save() }
+                        .show()
+
+                ErrorType.LIKE ->
+                    Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.retry) { viewModel.likeById(viewModel.lastPost.value!!) }
+                        .show()
+
+                ErrorType.REMOVE ->
+                    Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.retry) { viewModel.removeById(viewModel.lastId.value!!) }
+                        .show()
+
+                null -> Unit
+            }
         }
 
-        binding.retry.setOnClickListener {
-            viewModel.loadPosts()
+        swipeRefresh.setOnRefreshListener {
+            viewModel.refresh()
         }
-
-        binding.fab.setOnClickListener {
+        binding.add.setOnClickListener {
+            viewModel.removeEdit()
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
-
-        binding.banner.positiveButton.setOnClickListener {
-            viewModel.loadPosts()
-            binding.banner.root.startAnimation(animationSlideUp)
-            binding.banner.root.isVisible = false
-        }
-        binding.banner.negativeButton.setOnClickListener {
-            finishAffinity(this.requireActivity())
-        }
-
-        viewModel.smallErrorHappened.observe(viewLifecycleOwner){
-
-            binding.banner.root.isVisible = true
-            binding.banner.root.startAnimation(animationSlideDown)
-        }
-
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.loadPosts()
-        }
-
-
         return binding.root
     }
-
 }
-
-
-
-
-
