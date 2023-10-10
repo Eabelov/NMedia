@@ -3,11 +3,15 @@ package ru.netology.nmedia.activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import androidx.recyclerview.widget.RecyclerView.VISIBLE
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -96,6 +100,27 @@ class FeedFragment : Fragment() {
                 null -> Unit
             }
         }
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0){
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+        })
+
+        viewModel.newerCount.observe(viewLifecycleOwner){
+            if (it > 0) {
+                binding.newPostsButton.visibility = VISIBLE
+            }
+        }
+
+        binding.newPostsButton.setOnClickListener {
+            viewModel.showHiddenPosts()
+            binding.list.smoothScrollToPosition(0)
+            it.visibility = GONE
+        }
+
 
         swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
