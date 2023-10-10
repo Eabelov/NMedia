@@ -30,4 +30,8 @@
     <string name="empty_posts">Nothing to see here yet :(</string>
     <string name="empty_content_warning">Content can\'t be empty</string>
     <string name="type_hint">Enter the text…</string>
+    <string name="clear">Clear</string>
+    <string name="picker_error">Photo picker error</string>
+    <string name="save">Save</string>
+    <string name="back">Back</string>
 </resources>

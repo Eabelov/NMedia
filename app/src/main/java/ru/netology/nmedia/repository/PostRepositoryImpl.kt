@@ -12,6 +12,12 @@ import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.AppError
 import ru.netology.nmedia.error.NetworkError
 import java.io.IOException
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import ru.netology.nmedia.dto.Attachment
+import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.model.PhotoModel
+import ru.netology.nmedia.types.AttachmentType
 
 class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
     override val data: Flow<List<Post>> =
@@ -114,5 +120,45 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
         } catch (e: Exception) {
             throw ru.netology.nmedia.error.UnknownError
         }
+    }
+
+    override suspend fun saveWithAttachment(post: Post, model: PhotoModel) {
+
+
+        try {
+            val media = uploadMedia(model)
+
+            val response = PostApi.service.save(
+                post.copy(
+                    attachment =
+                    Attachment(
+                        media.id,
+                        AttachmentType.IMAGE
+                    )
+                )
+            )
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body, hidden = false))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw ru.netology.nmedia.error.UnknownError
+        }
+    }
+
+    private suspend fun uploadMedia(model: PhotoModel): Media {
+        val response = PostApi.service.uploadMedia(
+            MultipartBody.Part.createFormData("file", "file", model.file.asRequestBody())
+        )
+
+        if (!response.isSuccessful) {
+            throw ApiError(response.code(), response.message())
+        }
+
+        return requireNotNull(response.body())
     }
 }

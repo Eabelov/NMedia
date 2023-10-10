@@ -30,4 +30,8 @@
     <string name="empty_posts">Здесь пока ничего нет :(</string>
     <string name="empty_content_warning">Контент не может быть пустым</string>
     <string name="type_hint">Введите текст…</string>
+    <string name="clear">Убрать</string>
+    <string name="picker_error">Ошибка при выборе фото</string>
+    <string name="save">Сохранить</string>
+    <string name="back">Назад</string>
 </resources>
