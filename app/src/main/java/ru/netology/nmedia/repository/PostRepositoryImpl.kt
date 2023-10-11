@@ -23,7 +23,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
     override val data: Flow<List<Post>> =
         postDao.getAll().map { it.map(PostEntity::toDto) }
 
-    override fun getNewerCount(id: Long): Flow<Int> = flow {
+    override fun getNewer(id: Long): Flow<Int> = flow {
         while (true) {
             delay(10_000L)
             val response = PostApi.service.getNewer(id)
@@ -149,6 +149,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             throw ru.netology.nmedia.error.UnknownError
         }
     }
+
 
     private suspend fun uploadMedia(model: PhotoModel): Media {
         val response = PostApi.service.uploadMedia(
