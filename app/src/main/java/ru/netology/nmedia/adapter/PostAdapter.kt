@@ -78,6 +78,9 @@ class PostViewHolder(
             root.setOnClickListener {
                 onInteractionListener.onOpenPost(post)
             }
+            attachment.setOnClickListener {
+                onInteractionListener.onShowAttachment(post)
+            }
         }
     }
 }

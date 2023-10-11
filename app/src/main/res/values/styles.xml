@@ -26,6 +26,7 @@
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
     </style>
+
     <style name="Widget.AppTheme.ViewsButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="icon">@drawable/ic_views_24</item>
         <item name="iconTint">@color/color_default</item>
@@ -33,5 +34,9 @@
         <item name="android:minHeight">0dp</item>
     </style>
 
+    <style name="Fragment.AppTheme.Black" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="backgroundColor">@color/black</item>
+        <item name="android:foregroundTint">@color/black</item>
+    </style>
 
 </resources>

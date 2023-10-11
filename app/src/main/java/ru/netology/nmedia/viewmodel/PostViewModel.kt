@@ -14,6 +14,7 @@ import ru.netology.nmedia.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import ru.netology.nmedia.model.PhotoModel
 
 private val empty = Post(
     id = 0L,
@@ -39,6 +40,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
+
+    private val _photo = MutableLiveData<PhotoModel?>()
+    val photo: LiveData<PhotoModel?>
+        get() = _photo
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -117,7 +122,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun save() = viewModelScope.launch {
         try {
             edited.value?.let {
-                repository.save(it)
+                when (val photo = _photo.value) {
+                    null -> repository.save(it)
+                    else -> repository.saveWithAttachment(it, photo)
+                }
             }
             edited.value = empty
             _postCreated.postValue(Unit)
@@ -160,5 +168,14 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = ErrorType.REMOVE)
         }
+    }
+
+
+    fun setPhoto(photoModel: PhotoModel) {
+        _photo.value = photoModel
+    }
+
+    fun clearPhoto() {
+        _photo.value = null
     }
 }
