@@ -11,4 +11,5 @@ interface OnInteractionListener {
     fun onOpenPost(post: Post) {}
     fun onShowAttachment(post: Post) {}
     fun openVideoUrl(post: Post) {}
+
 }

@@ -19,6 +19,7 @@ import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+
 class NewPostFragment : Fragment() {
 
     private val viewModel: PostViewModel by viewModels(
@@ -33,6 +34,7 @@ class NewPostFragment : Fragment() {
                     R.string.picker_error,
                     Toast.LENGTH_SHORT
                 ).show()
+
                 Activity.RESULT_OK -> {
                     val uri = it.data?.data ?: return@registerForActivityResult
                     viewModel.setPhoto(PhotoModel(uri, uri.toFile()))
@@ -57,6 +59,7 @@ class NewPostFragment : Fragment() {
             ImagePicker.with(this)
                 .galleryOnly()
                 .crop()
+                .maxResultSize(2048, 2048)
                 .createIntent(photoPickerContract::launch)
         }
 
@@ -64,6 +67,7 @@ class NewPostFragment : Fragment() {
             ImagePicker.with(this)
                 .cameraOnly()
                 .crop()
+                .maxResultSize(2048, 2048)
                 .createIntent(photoPickerContract::launch)
         }
 
@@ -114,6 +118,7 @@ class NewPostFragment : Fragment() {
         }
         return binding.root
     }
+
     companion object {
         var Bundle.textArg: String? by StringArg
     }

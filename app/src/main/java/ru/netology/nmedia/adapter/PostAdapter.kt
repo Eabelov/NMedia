@@ -57,6 +57,11 @@ class PostViewHolder(
             share.setOnClickListener {
                 onInteractionListener.onShare(post)
             }
+            attachment.setOnClickListener {
+                onInteractionListener.onShowAttachment(post)
+            }
+            menu.isVisible = post.ownedByMe
+
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)

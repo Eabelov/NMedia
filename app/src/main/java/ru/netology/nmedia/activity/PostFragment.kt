@@ -14,6 +14,8 @@ import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.listener.OnInteractionListenerImpl
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.utils.AuthReminder
+import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class PostFragment : Fragment() {
@@ -31,10 +33,14 @@ class PostFragment : Fragment() {
             ownerProducer = ::requireParentFragment
         )
 
+        val authViewModel: AuthViewModel by viewModels(
+            ownerProducer = ::requireParentFragment
+        )
+
         val currentPostId = requireArguments().textArg?.toLong()
+
         val interactionListener by lazy {
             object : OnInteractionListenerImpl(this.requireActivity(), viewModel) {
-
                 override fun onRemove(post: Post) {
                     super.onRemove(post)
                     findNavController().navigate(R.id.action_postFragment_to_feedFragment)
@@ -49,6 +55,30 @@ class PostFragment : Fragment() {
                         })
                 }
 
+                override fun onLike(post: Post) {
+                    if (authViewModel.isAuthorized) {
+                        super.onLike(post)
+                    } else {
+                        AuthReminder.remind(
+                            binding.root,
+                            "You should sign in to like posts!",
+                            this@PostFragment
+                        )
+                    }
+                }
+
+                override fun onShare(post: Post) {
+                    if (authViewModel.isAuthorized) {
+                        super.onShare(post)
+                    } else {
+                        AuthReminder.remind(
+                            binding.root,
+                            "You should sign in to share posts!",
+                            this@PostFragment
+                        )
+                    }
+                }
+
                 override fun onShowAttachment(post: Post) {
                     findNavController().navigate(
                         R.id.action_postFragment_to_photoFragment,
@@ -59,6 +89,7 @@ class PostFragment : Fragment() {
                 }
             }
         }
+
         binding.post.apply {
             viewModel.data.observe(viewLifecycleOwner) { it ->
                 val viewHolder = PostViewHolder(binding.post, interactionListener)
