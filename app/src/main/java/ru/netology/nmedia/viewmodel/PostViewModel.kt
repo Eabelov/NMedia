@@ -158,7 +158,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(post: Post) = viewModelScope.launch {
-        _lastPost.postValue(post)
+        _lastPost.value = post
         try {
             repository.likeById(lastPost.value!!.id)
         } catch (e: Exception) {
@@ -167,12 +167,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun shareById(id: Long) = viewModelScope.launch {
-        _lastId.postValue(id)
+        _lastId.value = id
         repository.shareById(_lastId.value!!)
     }
 
     fun removeById(id: Long) = viewModelScope.launch {
-        _lastId.postValue(id)
+        _lastId.value = id
         try {
             repository.removeById(_lastId.value!!)
         } catch (e: Exception) {
