@@ -18,12 +18,16 @@ import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.ActivityAppBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
+import android.content.pm.PackageManager
+import android.os.Build
+import android.Manifest
 
 class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        requestNotificationsPermission()
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
@@ -50,6 +54,7 @@ class AppActivity : AppCompatActivity() {
         }
 
         checkGoogleApiAvailability()
+        requestNotificationsPermission()
 
         val viewModel: AuthViewModel by viewModels()
 
@@ -108,5 +113,20 @@ class AppActivity : AppCompatActivity() {
             }
             Toast.makeText(this@AppActivity, "Google Api Unavailable", Toast.LENGTH_LONG).show()
         }
+    }
+
+
+    private fun requestNotificationsPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return
+        }
+
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+
+        requestPermissions(arrayOf(permission), 1)
     }
 }
