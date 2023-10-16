@@ -50,7 +50,7 @@ class FCMService : FirebaseMessagingService() {
                 val content: String = pushJson?.optString("content") ?: pushStub
                 println("..........................................")
                 when(recipientId){
-                    "null", authId.toString() -> handlePush(content)
+                    "null", authId?.toString() ?: 0.toString() -> handlePush(content)
                     "0" -> AppAuth.getInstance().sendPushToken()
                     else -> AppAuth.getInstance().sendPushToken()
                 }
