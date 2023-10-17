@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.model.PhotoModel
@@ -19,12 +20,9 @@ import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-
+@AndroidEntryPoint
 class NewPostFragment : Fragment() {
-
-    private val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    private val viewModel: PostViewModel by viewModels()
 
     private val photoPickerContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -54,27 +52,21 @@ class NewPostFragment : Fragment() {
         )
         arguments?.textArg?.let(binding.content::setText)
         binding.content.requestFocus()
-
         binding.pickPhoto.setOnClickListener {
             ImagePicker.with(this)
                 .galleryOnly()
                 .crop()
-                .maxResultSize(2048, 2048)
                 .createIntent(photoPickerContract::launch)
         }
-
         binding.takePhoto.setOnClickListener {
             ImagePicker.with(this)
                 .cameraOnly()
                 .crop()
-                .maxResultSize(2048, 2048)
                 .createIntent(photoPickerContract::launch)
         }
-
         binding.clear.setOnClickListener {
             viewModel.clearPhoto()
         }
-
         viewModel.photo.observe(viewLifecycleOwner) { photo ->
             if (photo == null) {
                 binding.previewContainer.isGone = true
@@ -84,7 +76,6 @@ class NewPostFragment : Fragment() {
             binding.previewContainer.isGone = false
             binding.preview.setImageURI(photo.uri)
         }
-
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.new_post_save, menu)
@@ -111,7 +102,6 @@ class NewPostFragment : Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner)
-
         viewModel.postCreated.observe(viewLifecycleOwner) {
             viewModel.loadPosts()
             findNavController().navigateUp()
