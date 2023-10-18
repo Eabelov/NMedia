@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     @ApplicationContext
-    context: Context
+    context: Context,
+    private val appAuth: AppAuth
 ) : ViewModel() {
 
 
@@ -45,7 +46,7 @@ class SignInViewModel @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val token: Token = requireNotNull(response.body())
-            AppAuth.getInstance().setToken(token)
+            appAuth.setToken(token)
             _dataState.value = AuthModelState(success = true)
         } catch (e: Exception) {
             _dataState.value = AuthModelState(error = true)

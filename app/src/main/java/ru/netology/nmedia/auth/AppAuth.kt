@@ -28,17 +28,6 @@ class AppAuth @Inject constructor(
     companion object {
         private const val TOKEN_KEY = "token"
         private const val ID_KEY = "id"
-
-        @Volatile
-        private var INSTANCE: AppAuth? = null
-        fun initApp(context: Context) {
-            INSTANCE = AppAuth(context)
-        }
-
-        fun getInstance(): AppAuth = requireNotNull(INSTANCE) {
-            "You must call to police before (I'm jokin, I mean initApp)"
-        }
-
     }
 
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
