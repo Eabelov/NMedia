@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.recyclerview.widget.RecyclerView.VISIBLE
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -24,13 +25,10 @@ import ru.netology.nmedia.utils.AuthReminder
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+@AndroidEntryPoint
 class FeedFragment : Fragment() {
-    val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
-    val authViewModel: AuthViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    val viewModel: PostViewModel by viewModels()
+    val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,12 +40,10 @@ class FeedFragment : Fragment() {
             container,
             false
         )
-
         val interactionListener by lazy {
             object : OnInteractionListenerImpl(
                 this@FeedFragment.requireActivity(), viewModel
             ) {
-
                 override fun onOpenPost(post: Post) {
                     findNavController().navigate(
                         R.id.action_feedFragment_to_postFragment,
@@ -94,14 +90,11 @@ class FeedFragment : Fragment() {
                         R.id.action_feedFragment_to_photoFragment,
                         Bundle().apply {
                             textArg = "${BuildConfig.BASE_URL}media/${post.attachment!!.url}"
-
                         })
                 }
             }
         }
-
         val swipeRefresh = binding.swiperefresh
-
         val adapter = PostsAdapter(interactionListener)
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { data ->
@@ -137,7 +130,6 @@ class FeedFragment : Fragment() {
                         .show()
 
                 else -> Unit
-
             }
         }
         adapter.registerAdapterDataObserver(object : AdapterDataObserver() {
@@ -152,7 +144,6 @@ class FeedFragment : Fragment() {
                 binding.newPostsButton.visibility = VISIBLE
             }
         }
-
         binding.newPostsButton.setOnClickListener {
             viewModel.showHiddenPosts()
             binding.list.smoothScrollToPosition(0)
@@ -161,7 +152,6 @@ class FeedFragment : Fragment() {
         swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
         }
-
         binding.add.setOnClickListener {
             if (authViewModel.isAuthorized) {
                 viewModel.removeEdit()

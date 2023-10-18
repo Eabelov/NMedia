@@ -7,7 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 
 object AuthReminder {
-    fun remind(view: View, message: String, fragment: Fragment){
+    fun remind(view: View, message: String, fragment: Fragment) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction(R.string.sign_in) { findNavController(fragment).navigate(R.id.signInFragment) }
             .show()
