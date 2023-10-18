@@ -1,9 +1,13 @@
 package ru.netology.nmedia.viewmodel
 
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -37,9 +41,12 @@ class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth
 ) : ViewModel() {
+    private val cached = repository
+        .data
+        .cachedIn(viewModelScope)
 
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    /*@OptIn(ExperimentalCoroutinesApi::class)
     val data: LiveData<FeedModel> = appAuth.data.flatMapLatest { token ->
         repository.data
             .map { posts ->
@@ -49,7 +56,17 @@ class PostViewModel @Inject constructor(
             }
             .map { FeedModel(it) }
     }
-        .asLiveData(Dispatchers.Default)
+        .asLiveData(Dispatchers.Default)*/
+    val data: Flow<PagingData<Post>> = appAuth.data
+        .flatMapLatest { token ->
+            cached.map { pagingData ->
+                pagingData.map { post ->
+                    post.copy(ownedByMe = post.authorId == token?.id)
+                }
+            }
+        }
+
+
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
@@ -59,12 +76,12 @@ class PostViewModel @Inject constructor(
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
-    val newerCount: LiveData<Int> = data.switchMap {
+    /*val newerCount: LiveData<Int> = data.switchMap {
         repository.getNewer(it.posts.firstOrNull()?.id ?: 0L)
             .catch { e -> e.printStackTrace() }
             .asLiveData(Dispatchers.Default)
     }
-        .distinctUntilChanged()
+        .distinctUntilChanged()*/
     private val edited = MutableLiveData(empty)
     private val _lastId = MutableLiveData<Long>()
     val lastId: LiveData<Long>

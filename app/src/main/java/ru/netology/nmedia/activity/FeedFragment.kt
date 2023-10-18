@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.recyclerview.widget.RecyclerView.VISIBLE
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -97,15 +101,8 @@ class FeedFragment : Fragment() {
         val swipeRefresh = binding.swiperefresh
         val adapter = PostsAdapter(interactionListener)
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { data ->
-            val newPost = adapter.currentList.size < data.posts.size
-            adapter.submitList(data.posts) {
-                if (newPost) {
-                    binding.list.smoothScrollToPosition(0)
-                }
-            }
-            binding.emptyText.isVisible = data.empty
-        }
+        lifecycleScope.launchWhenCreated { viewModel.data.collectLatest { adapter.submitData(it) } }
+        lifecycleScope.launchWhenCreated { adapter.loadStateFlow.collectLatest { it.refresh is LoadState.Loading || it.append is LoadState.Loading || it.prepend is LoadState.Loading } }
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.swiperefresh.isRefreshing = state.refreshing
             when (state.error) {
@@ -139,11 +136,11 @@ class FeedFragment : Fragment() {
                 }
             }
         })
-        viewModel.newerCount.observe(viewLifecycleOwner) {
+        /*viewModel.newerCount.observe(viewLifecycleOwner) {
             if (it > 0) {
                 binding.newPostsButton.visibility = VISIBLE
             }
-        }
+        }*/
         binding.newPostsButton.setOnClickListener {
             viewModel.showHiddenPosts()
             binding.list.smoothScrollToPosition(0)
