@@ -1,6 +1,8 @@
 package ru.netology.nmedia.repository
 
 import android.content.Context
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -29,10 +31,14 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
     @ApplicationContext
-    private val context: Context
+    private val apiService: ApiService,
 ) : PostRepository {
-    override val data: Flow<List<Post>> =
-        postDao.getAll().map { it.map(PostEntity::toDto) }
+    override val data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            PostPagingSource(apiService)
+        }
+    ).flow
 
     @InstallIn(SingletonComponent::class)
     @EntryPoint
@@ -40,13 +46,10 @@ class PostRepositoryImpl @Inject constructor(
         fun getApiService(): ApiService
     }
 
-    private val entryPoint =
-        EntryPointAccessors.fromApplication(context, RepositoryEntryPoint::class.java)
-
     override fun getNewer(id: Long): Flow<Int> = flow {
         while (true) {
             delay(10_000L)
-            val response = entryPoint.getApiService().getNewer(id)
+            val response = apiService.getNewer(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -59,7 +62,7 @@ class PostRepositoryImpl @Inject constructor(
         .flowOn(Dispatchers.Default)
 
     override suspend fun getAll() {
-        val response = entryPoint.getApiService().getAll()
+        val response = apiService.getAll()
         if (!response.isSuccessful) {
             throw RuntimeException(response.message())
         }
@@ -68,7 +71,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllVisible() {
-        val response = entryPoint.getApiService().getAll()
+        val response = apiService.getAll()
         if (!response.isSuccessful) {
             throw RuntimeException(response.message())
         }
@@ -91,8 +94,8 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun likeById(id: Long) {
         try {
             val liked = postDao.getById(id).likedByMe
-            val response = if (liked) entryPoint.getApiService().unlikeById(id)
-            else entryPoint.getApiService().likeById(id)
+            val response = if (liked) apiService.unlikeById(id)
+            else apiService.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -111,7 +114,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun save(post: Post) {
         try {
-            val response = entryPoint.getApiService().save(post)
+            val response = apiService.save(post)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -127,7 +130,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun saveWithAttachment(post: Post, model: PhotoModel) {
         try {
             val media = uploadMedia(model)
-            val response = entryPoint.getApiService().save(
+            val response = apiService.save(
                 post.copy(
                     attachment =
                     Attachment(
@@ -149,7 +152,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     private suspend fun uploadMedia(model: PhotoModel): Media {
-        val response = entryPoint.getApiService().uploadMedia(
+        val response = apiService.uploadMedia(
             MultipartBody.Part.createFormData("file", "file", model.file.asRequestBody())
         )
 
@@ -162,7 +165,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun removeById(id: Long) {
         try {
             postDao.removeById(id)
-            val response = entryPoint.getApiService().removeById(id)
+            val response = apiService.removeById(id)
             if (!response.isSuccessful) {
                 throw RuntimeException(response.message())
             }
